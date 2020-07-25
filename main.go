@@ -9,10 +9,13 @@ import (
 	"github.com/arnarg/pushnix/commands"
 )
 
+var Version string = "unknown"
+
 func main() {
 	app := &cli.App{
 		Name:     "pushnix",
 		Usage:    "push configuration to a NixOS host",
+		Version:  Version,
 		Commands: commands.GetCommands(),
 	}
 
