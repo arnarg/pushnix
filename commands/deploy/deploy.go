@@ -1,13 +1,13 @@
 package deploy
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 
 	"github.com/arnarg/pushnix/commands/push"
 	"github.com/arnarg/pushnix/util"
 )
+
+var logger = util.Logger
 
 var Command cli.Command = cli.Command{
 	Name:      "deploy",
@@ -39,6 +39,6 @@ func Run(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Printf("Rebuilding NixOS on host %s@%s...\n", host.User, host.Host)
+	logger.Printf("Rebuilding NixOS on host %s@%s...\n", host.User, host.Host)
 	return util.SSHNixosRebuild(host, upgrade, nixExtraArgs)
 }

@@ -8,6 +8,8 @@ import (
 	"github.com/arnarg/pushnix/util"
 )
 
+var logger = util.Logger
+
 var Command cli.Command = cli.Command{
 	Name:      "push",
 	Aliases:   []string{"p"},
@@ -41,6 +43,6 @@ func RunPush(c *cli.Context) (*util.SSHHost, error) {
 		return nil, fmt.Errorf("Could not find remote %s", r)
 	}
 
-	fmt.Printf("Pushing configuration to remote %s...\n", r)
+	logger.Printf("Pushing configuration to remote %s...\n", r)
 	return host, util.GitPush(r, force)
 }
