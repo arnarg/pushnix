@@ -2,8 +2,6 @@ package util
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"regexp"
 
 	"github.com/go-git/go-git/v5"
@@ -16,17 +14,10 @@ type SSHHost struct {
 }
 
 func GetHostFromRemoteName(n string) (*SSHHost, error) {
-	wd, err := os.Getwd()
-	if err != nil {
-		return nil, err
+	options := &git.PlainOpenOptions{
+		DetectDotGit: true,
 	}
-
-	gitDir, err := findGitBase(wd)
-	if err != nil {
-		return nil, err
-	}
-
-	repo, err := git.PlainOpen(gitDir)
+	repo, err := git.PlainOpenWithOptions(".", options)
 	if err != nil {
 		return nil, err
 	}
@@ -71,15 +62,4 @@ func parseGitURL(u string) *SSHHost {
 		Host: host,
 		Port: port,
 	}
-}
-
-func findGitBase(p string) (string, error) {
-	if p == "/" {
-		return "", fmt.Errorf("not a git repository")
-	}
-	if fm, err := os.Stat(p + "/.git"); err == nil && fm.IsDir() {
-		return p, nil
-	}
-	ret, err := findGitBase(filepath.Dir(p))
-	return ret, err
 }
